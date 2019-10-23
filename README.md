@@ -5,9 +5,9 @@ We are providing these to promote the development of code/container templates to
 
 ## Contributing
 We welcome the addition of other base docker images to this repo.
-Please be sure to clearly label your folders for the environment you are targetting; starting folder names with 'aws', 'clowder', or 'cyverse' for example.
+Please be sure to clearly label your folders for the environment you are targeting; starting folder names with 'aws', 'clowder', or 'cyverse' for example.
 
-Folder beinging with 'base' are reserved to those images that are not particular to any single environment.
+Folder beginning with 'base' are reserved to those images that are not particular to any single environment.
 
 Be sure to read the [organization documentation](https://github.com/AgPipeline/Organization-info) on how to contribute.
 
