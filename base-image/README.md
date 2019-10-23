@@ -5,11 +5,11 @@ This code is intended to be used as the basis for derived transformers and docke
 
 - For each environment (such as Clowder, TERRA REF, CyVerse) the transformer_class.py file is replaced.
 
-- For each extractor the transformer.py file is replaced.
+- For each transformer the transformer.py file is replaced.
 
 - Additionally, the entrypoint.py script can be called from a different script allowing pre- and post- processing (see [entrypoint.py](#entrypoint) below).
 
-It is expected that this arrangement will provide reusable code not only within a single environment, but across extractors in different environments as well.
+It is expected that this arrangement will provide reusable code not only within a single environment, but across transformers in different environments as well.
 
 ## Quick Start
 Create a new repository to hold the code specific to your environment or transformer.
@@ -43,8 +43,8 @@ The `do_work` function expects to get an instance or `argparse.ArgumentParser` p
 Calling `do_work` returns a dict of the result.
 Briefly, the 'code' key of the return value indicates the result of the call, and the presence of an 'error' key indicates an error ocurred.
 
-To provide environmental context to a transformer, the extractor_class.py file can be replaced with something more meaningful.
-The extractor_class.py file in this repo defines a class that has methods that will be called by entrypoint.py if they're defined.
+To provide environmental context to a transformer, the transformer_class.py file can be replaced with something more meaningful.
+The transformer_class.py file in this repo defines a class that has methods that will be called by entrypoint.py if they're defined.
 The class methods are not required but can provide convenient hooks for customization.
 An instance of this class is passed to the transformer code in [transformer.py](#transformer)
 
