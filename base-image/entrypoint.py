@@ -153,6 +153,13 @@ class __internal__():
         else:
             logging.debug("transformer module doesn't have a function named 'check_continue'")
 
+        # Retrieve additional files if indicated by return code from the check
+        if not 'error' in result and 'code' in result and result['code'] == 0:
+            # TODO: Fetch additional data for processing
+            # TODO: how to provide list of downloaded files to transformer_params
+            #           (maybe another parameter to perform_process?)
+            pass
+
         # Next make the call to perform the processing
         if not 'error' in result:
             if hasattr(transformer, 'perform_process'):
@@ -208,10 +215,10 @@ def add_parameters(parser: argparse.ArgumentParser, transformer_instance) -> Non
     parser.add_argument('--result', nargs='?', default='all',
                         help='Direct the result of a run to one or more of (all is default): "all,file,print"')
 
-    parser.add_argument('--metadata', default=None,
-                        help='The path to the source metadata')
+    parser.add_argument('--metadata', type=str, help='The path to the source metadata')
 
-    parser.add_argument('working_space', type=str, help='the folder to use use as a workspace and for storing results')
+    parser.add_argument('--working_space', type=str, help='the folder to use use as a workspace and ' +
+                        'for storing results')
 
     # Let the transformer class add parameters
     if hasattr(transformer_instance, 'add_parameters'):
@@ -221,15 +228,16 @@ def add_parameters(parser: argparse.ArgumentParser, transformer_instance) -> Non
     if hasattr(transformer, 'add_parameters'):
         transformer.add_parameters(parser)
 
-def do_work(parser: argparse.ArgumentParser) -> None:
+def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
     """Function to prepare and execute work unit
     Arguments:
         parser: an instance of argparse.ArgumentParser
+        kwargs: keyword args
     """
     result = {}
 
     # Create an instance of the transformer
-    transformer_instance = transformer_class.Transformer()
+    transformer_instance = transformer_class.Transformer(**kwargs)
     if not transformer_instance:
         result = __internal__.handle_error(-100, "Unable to create transformer class instance for processing")
         return __internal__.handle_result(None, None, result)

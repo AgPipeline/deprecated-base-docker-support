@@ -38,7 +38,8 @@ If you are replacing this file with your own version, be sure to keep existing c
 ### entrypoint.py <a name="entrypoint" />
 This file can be executed as an independent script, or called by other Python code.
 If calling into this script, the entry point is a function named `do_work`.
-The `do_work` function expects to get an instance or `argparse.ArgumentParser` passed in as its only parameter.
+The `do_work` function expects to get an instance or `argparse.ArgumentParser` passed in as its first parameter.
+Additional named parameters can also be passed in as kwargs; these are then passed to the new instance of transformer_class.Transformer at initialization.
 
 Calling `do_work` returns a dict of the result.
 Briefly, the 'code' key of the return value indicates the result of the call, and the presence of an 'error' key indicates an error ocurred.
@@ -92,4 +93,14 @@ The result of the above steps may produce warnings, errors, or successful result
 These results can be stored in a file, printed to standard output, and/or returned to the caller of `do_work`.
 In the default case that we're exploring here, the return value from do_work is ignored.
 
+## Defined Command Line Parameters
+The following command line parameters are defined for all transformers.
 
+* --debug, -d: (optional parameter) enable debug level logging messages
+* -h: (optional parameter) display help message (automatically defined by argparse)
+* --info, -i: (optional parameter) enable info level logging messages
+* --result: (optional parameter) how to handle the result of processing; one or more comma-separated strings of: all, file, print
+* --metadata: mandatory path to file containing JSON metadata
+* --working_space: path to folder to use as a working space and file store
+
+*Pro Tip* - Use the `-h` parameter against the script or docker container to see all the command line options for a transformer.

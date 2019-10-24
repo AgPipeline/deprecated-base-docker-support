@@ -7,8 +7,10 @@ import argparse
 class Transformer():
     """Generic class for supporting transformers
     """
-    def __init__(self):
+    def __init__(self, **kwargs):
         """Performs initialization of class instance
+        Arguments:
+            kwargs: additional parameters passed into Transformer instance
         """
 
     def add_parameters(self, parser: argparse.ArgumentParser) -> None:
