@@ -67,7 +67,6 @@ We assume that this transformer is started by running the [entrypoint.py](#entry
 1. Initialization of Parameters: 
 The first thing that happens is the initialization of an instance of `argparse.ArgumentParser` and the creation of a `transformer_class.Transformer` instance.
 The entrypoint.py script adds its parameters, followed by the transformer_class.Transformer instance, and finally the transformer can add theirs.
-
 The parse_args() method is called on the ArgumentParser instance and the resulting argument values are stored in memory.
 
 2. Loading of Metadata: 
@@ -102,5 +101,6 @@ The following command line parameters are defined for all transformers.
 * --result: (optional parameter) how to handle the result of processing; one or more comma-separated strings of: all, file, print
 * --metadata: mandatory path to file containing JSON metadata
 * --working_space: path to folder to use as a working space and file store
+* the "file_list" argument contains all additional parameters (which are assumed to be file names but may not be)
 
 *Pro Tip* - Use the `-h` parameter against the script or docker container to see all the command line options for a transformer.

@@ -228,6 +228,9 @@ def add_parameters(parser: argparse.ArgumentParser, transformer_instance) -> Non
     if hasattr(transformer, 'add_parameters'):
         transformer.add_parameters(parser)
 
+    # Assume the rest of the arguments are the files
+    parser.add_argument('file_list', nargs=argparse.REMAINDER, help='additional files for transformer')
+
 def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
     """Function to prepare and execute work unit
     Arguments:
