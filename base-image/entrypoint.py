@@ -156,8 +156,6 @@ class __internal__():
         # Retrieve additional files if indicated by return code from the check
         if not 'error' in result and 'code' in result and result['code'] == 0:
             # TODO: Fetch additional data for processing
-            # TODO: how to provide list of downloaded files to transformer_params
-            #           (maybe another parameter to perform_process?)
             pass
 
         # Next make the call to perform the processing
@@ -268,7 +266,7 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
 
 if __name__ == "__main__":
     try:
-        PARSER = argparse.ArgumentParser(description=configuration.DESCRIPTION)
+        PARSER = argparse.ArgumentParser(description=configuration.TRANSFORMER_DESCRIPTION)
         do_work(PARSER)
     except Exception as ex:
         logging.error("Top level exception handler caught an exception: %s", str(ex))
