@@ -16,8 +16,8 @@ def check_continue(transformer: transformer_class.Transformer, **kwargs) -> dict
     Arguments:
         transformer: instance of transformer class
     Return:
-        Returns a dictionary containining the return code for contiuing or not, and
-        an error message
+        Returns a dictionary containining the return code for continuing or not, and
+        an error message if there's an error
     """
     print("check_continue(): received arguments: %s" % str(kwargs))
     return {'code': 0}
