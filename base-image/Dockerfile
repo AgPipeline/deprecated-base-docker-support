@@ -12,15 +12,14 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
         python3 \
-        python3-pip
+        python3-pip && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
       
 RUN python3 -m pip install --upgrade --no-cache-dir pip 
 
 RUN python3 -m pip install --upgrade --no-cache-dir setuptools
-
-RUN apt-get autoremove -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
 COPY *.py /home/extractor/
 RUN chmod +x /home/extractor/entrypoint.py
