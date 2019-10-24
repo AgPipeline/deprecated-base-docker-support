@@ -185,7 +185,7 @@ class __internal__():
         if not result_types is None:
             type_parts = [one_type.strip() for one_type in result_types.split(',')]
             if 'print' in type_parts or 'all' in type_parts:
-                print(json.dumps(dict, indent=2))
+                print(json.dumps(result, indent=2))
             if 'file' in type_parts or 'all' in type_parts:
                 if result_file_path:
                     os.makedirs(result_file_path, exist_ok=True)
@@ -261,7 +261,12 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
         else:
             result = __internal__.handle_error(-3, md_result['error'])
 
-    __internal__.handle_result(args.result, os.path.join(args.working_space, 'result.json'), result)
+    if args.working_space:
+        result_path = os.path.join(args.working_space, 'result.json')
+    else:
+        result_path = None
+        
+    __internal__.handle_result(args.result, result_path, result)
     return result
 
 if __name__ == "__main__":
