@@ -1,13 +1,20 @@
 # Docker support
-This repo is used for developing base docker images that can be used for further development of code.
+This repo is used for developing base Docker images that can be used for further development of code.
 
 We are providing these to promote the development of code/container templates to reduce the cost of adding functionality to the processing pipeline.
 
-## Contributing
-We welcome the addition of other base docker images to this repo.
-Please be sure to clearly label your folders for the environment you are targetting; starting folder names with 'aws', 'clowder', or 'cyverse' for example.
+It is expected that all derived docker images will have their own repositories instead of residing here.
+See [Contributing](#contributing) below for more information on how to name your derived repos.
 
-Folder beinging with 'base' are reserved to those images that are not particular to any single environment.
+## Contributing <a name="contributing" />
+We welcome the addition of other base docker images to this repo.
+
+**But first**, if you are finding that the code provided in the `base-image` folder is not meeting your needs, please file an [feature request](https://github.com/AgPipeline/computing-pipeline/issues/new/choose) first so that we can try and address your needs.
+
+Please be sure to clearly label your folders for the environment you are targeting; starting folder names with 'aws', 'clowder', or 'cyverse' for example.
+If you are thinking of creating an environment specific folder, please consider putting it into its own repository first, using the just mentioned naming convention, to keep this one as clean as possible.
+
+Folder beginning with 'base' are reserved to those images that are not particular to any single environment.
 
 Be sure to read the [organization documentation](https://github.com/AgPipeline/Organization-info) on how to contribute.
 
