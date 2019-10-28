@@ -13,9 +13,6 @@ import transformer_class
 import configuration
 import transformer
 
-# Setup where sensor data is location in this image
-#terrautils.lemnatec.SENSOR_METADATA_CACHE = os.path.dirname(os.path.realpath(__file__))
-
 class __internal__():
     """Class for functions intended for internal use only for this file
     """
