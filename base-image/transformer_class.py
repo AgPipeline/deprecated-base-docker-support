@@ -12,6 +12,7 @@ class Transformer():
         Arguments:
             kwargs: additional parameters passed into Transformer instance
         """
+        self.args = None
 
     def add_parameters(self, parser: argparse.ArgumentParser) -> None:
         """Adds processing parameters to existing parameters
@@ -26,5 +27,7 @@ class Transformer():
             args: result of calling argparse.parse_args
             metadata: the loaded metadata
         """
+        self.args = args
+
         params = {}
         return params

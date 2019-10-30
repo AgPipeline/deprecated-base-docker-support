@@ -13,9 +13,6 @@ import transformer_class
 import configuration
 import transformer
 
-# Setup where sensor data is location in this image
-#terrautils.lemnatec.SENSOR_METADATA_CACHE = os.path.dirname(os.path.realpath(__file__))
-
 class __internal__():
     """Class for functions intended for internal use only for this file
     """
@@ -141,6 +138,12 @@ class __internal__():
             if not isinstance(transformer_params, dict):
                 return __internal__.handle_error(-101, \
                     "Invalid return from getting transformer parameters from transformer class instance")
+            elif 'code' in transformer_params:
+                if 'error' in transformer_params:
+                    error = transformer_params['error']
+                else:
+                    error = "Error returned from get_transformer_params with code: %s" % transformer_params['code']
+                return __internal__.handle_error(-101, error)
         else:
             logging.debug("Transformer class instance does not have get_transformer_params method")
             transformer_params = {}
@@ -188,7 +191,7 @@ class __internal__():
                 print(json.dumps(result, indent=2))
             if 'file' in type_parts or 'all' in type_parts:
                 if result_file_path:
-                    os.makedirs(result_file_path, exist_ok=True)
+                    os.makedirs(os.path.dirname(result_file_path), exist_ok=True)
                     with open(result_file_path, 'w') as out_file:
                         json.dump(result, out_file, indent=2)
                 else:
@@ -257,7 +260,7 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
     else:
         md_result = __internal__.load_metadata(args.metadata)
         if 'metadata' in md_result:
-            result = __internal__.perform_processing(transformer_instance, args, md_result)
+            result = __internal__.perform_processing(transformer_instance, args, md_result['metadata'])
         else:
             result = __internal__.handle_error(-3, md_result['error'])
 
@@ -265,7 +268,7 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
         result_path = os.path.join(args.working_space, 'result.json')
     else:
         result_path = None
-        
+
     __internal__.handle_result(args.result, result_path, result)
     return result
 
