@@ -107,3 +107,9 @@ The following command line parameters are defined for all transformers.
 * the "file_list" argument contains all additional parameters (which are assumed to be file names but may not be)
 
 *Pro Tip* - Use the `-h` parameter against the script or docker container to see all the command line options for a transformer.
+
+## Conventions
+**error return code ranges**: 
+- [entrypoint.py](#entrypoint) returns error values in the range of `-1` to `-99`
+- [transformer_class.py](#transformer_class) returns error values in the range of `-100` to `-999`
+- [transformer.py](#transformer) returns error values in the range of `-1000` and greater
