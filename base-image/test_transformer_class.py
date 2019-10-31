@@ -1,4 +1,4 @@
-"""Tests for the Transformer Class
+"""Tests for 'transformer_class.py"
 """
 
 #Import testing module
@@ -26,7 +26,7 @@ class TransformerClassTest(unittest.TestCase):
         parse = argparse.ArgumentParser(description= "Test")
         
         #Checks that add_parameters returns None
-        self.assertEqual(self.transformer.add_parameters(parse), None,\
+        self.assertIsNone(self.transformer.add_parameters(parse),\
             'Does not return None')
         
         #Similar only stored in a variable
@@ -44,12 +44,12 @@ class TransformerClassTest(unittest.TestCase):
         test_data = {}
         
         #Tests to make sure return value is dict type
-        self.assertEqual(type(self.transformer.get_transformer_params(parse,test_data)), dict, \
+        self.assertIsInstance(self.transformer.get_transformer_params(parse,test_data), dict, \
             "Did not return a dictionary object type")
         
         #Similar only stored in a vaiable
         testee = self.transformer.get_transformer_params(parse,test_data)
-        self.assertTrue(isinstance(testee, dict), "Not a dictionary")
+        self.assertIsInstance(testee, dict, "Not a dictionary")
         
         
         
