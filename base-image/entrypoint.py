@@ -84,7 +84,7 @@ class __internal__():
         Notes:
             A string parameter is always return a result code will be None and message of None indicating
             the caller needs to decide what to do.
-            An integer parameter will cause the result message value of None, the caller needs to decide 
+            An integer parameter will cause the result message value of None, the caller needs to decide
             what an appropriate message is.
             A parameter that's iterable with a length > 0 will have the first value as the result code and the
             second value as the result message. No checks are made for type conformity.
@@ -146,7 +146,7 @@ class __internal__():
             if not isinstance(transformer_params, dict):
                 return __internal__.handle_error(-101, \
                     "Invalid return from getting transformer parameters from transformer class instance")
-            elif 'code' in transformer_params:
+            if 'code' in transformer_params:
                 if 'error' in transformer_params:
                     error = transformer_params['error']
                 else:
