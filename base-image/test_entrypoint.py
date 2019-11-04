@@ -1,145 +1,112 @@
 """Tests for 'entrypoint.py'
 """
 
-#Importing testing package
-import unittest
-
 #Import entrypoint.py and embedded modules
-from entrypoint import __internal__, add_parameters,do_work
+import entrypoint
 import argparse
 import os
 import json
 import logging
-import transformer_class
-import configuration
 import transformer
+from transformer_class import Transformer
+import configuration
 
-#Create testing class
-class EntrypointTest(unittest.TestCase):
-    """Generic class for running tests
+#Set up initial testing values
+test_transformer = Transformer()
+parse = argparse.ArgumentParser(description="test")
+test_internal = entrypoint.__internal__()
+
+def test_handle_error():
+    """Test for handle error
     """
-    def setUp(self):
-        """Sets up initial instance of __internal__ class
-        """
-        self.internal = __internal__()
-        self.transformer = transformer_class.Transformer()
+    #Some testing arguments
+    test_code = 117
+    test_message = "Test message"
 
-    def test_handle_error(self):
-        """Test for handle_error method
-        """
-        
-        #Setting up testing arguments
-        test_code = 117
-        test_message = "Test message"
+    #Initial test using "ideal" args
+    ideal_example = test_internal.handle_error(test_code, test_message)
+    #Should return dict type
+    assert isinstance(ideal_example, dict)
 
-        #Initial test using "ideal" args
-        ideal_example = self.internal.handle_error(test_code,test_message)
-        self.assertIsInstance(ideal_example, dict, "Should return a dict type")
+    #A secondary test 
+    test_code = None
+    test_message = False
 
-        #Secondary tests
-        test_code = None
-        test_message = False
+    secondary_example = test_internal.handle_error(test_code,test_message)
+    assert isinstance(secondary_example, dict)
 
-        secondary_example = self.internal.handle_error(test_code, test_message)
-        self.assertIsInstance(secondary_example, dict, "Should return a dict type")
+def test_load_metadata():
+    """Test load_metadata method
+    """
 
-    def test_load_metadata(self):
-        """Test the load_metadata method
-        """
-        
-        #setting up testing argument(s)
-        test_path = "https://example-metadata-path.com"
-        
-        #Test
-        testee = self.internal.load_metadata(test_path)
-        self.assertIsInstance(testee, dict, 'Should return a dict type')
-        
+    #Set some testing arguments
+    test_path = "https://example-metadata-path.com"
 
-    def test_parse_continue_result(self):
-        """Test of the parse_continue_resilt method
-        """
+    #Save method call to variable
+    testee = test_internal.load_metadata(test_path)
+    #Should return dict type
+    assert isinstance(testee, dict)
 
-        #Saving check_continue result to variable
-        test_result = transformer.check_continue(self.transformer)
+def test_parse_continue_result():
+    """Test of the parse_continue method
+    """
 
-        #Assigning method to variable
-        continue_result = self.internal.parse_continue_result(test_result)
+    #Saving check_continue result to a variable
+    check_result = transformer.check_continue(test_transformer)
+    #Assigning method call to variable
+    continue_result = test_internal.parse_continue_result(check_result)
+    #Should return list type
+    assert isinstance(continue_result, tuple)
 
-        #Making sure it returns a list
-        self.assertIsInstance(continue_result, list, "Should return a list")
+def test_handle_check_continue():
+    """Test for handle_check_continue method
+    """
 
-    def test_handle_check_continue(self):
-        """Test for handle_check_continue
-        """
+    #Creating a testing dictionary
+    test_dict = {}
+    
+    #Saving method call to variable
+    testee = test_internal.handle_check_continue(test_transformer, test_dict)
 
-        #Setting up a test dictionary
-        test_dict = {"Test": 0}
+    #Should return dict type
+    assert isinstance(testee, dict)
 
-        #Saving method call to a variable
-        check_handle = self.internal.handle_check_continue(self.transformer,test_dict)
+def test_perform_processing():
+    """Test for perform_processing method
+    """
 
-        #Checking output type
-        self.assertIsInstance(check_handle, dict,\
-             "Should return a dictionary")
+    #Call the load_metadata method and store result to a variable 
+    test_path = "https://example-metadata-path.com"
+    test_metadata = test_internal.load_metadata(test_path)
 
-    def test_perform_processing(self):
-        """Test of the perform_processing method
-        """
+    #Save method call to variable
+    test_process = test_internal.perform_processing(test_transformer,parse, test_metadata)
 
-        #Create an argparse instance
-        parse = argparse.ArgumentParser()
+    #Should return dict
+    assert isinstance(test_process, dict)
 
-        #Create a test metadata dictionary
-        test_metadata = {}
+'''
+def test_handle_result():
+    """
+    """
+'''
 
-        #Store perform_processing call to variable
-        test_processing = self.internal.perform_processing(self.transformer,parse, test_metadata)
+def test_add_parameters():
+    """Test add_parameters function
+    """
 
-        #Check that return is a dict type
-        self.assertIsInstance(test_processing, dict, "Should be dict type")
+    #Save function call to variable
+    test_params = entrypoint.add_parameters(parse,test_transformer)
 
+    #Should return None
+    assert test_params == None
 
-    def test_handle_result(self):
-        """Test for handle_result method
-        """
+def test_do_work():
+    """Test for do_work function
+    """
+    
+    #Save function call to variable
+    test_work = entrypoint.do_work(parse)
 
-        #Create variables for arguments
-        test_types = 'print'
-        
-        test_path = '\base-docker-support\base-image'
-        test_result = {}
-
-        #saving method call to vaiable
-        handled_result = self.internal.handle_result(test_types,test_path, test_result)
-
-        #Testing output type
-        self.assertIsInstance(handled_result, dict, "Should return dict type")
-
-        #Testing that the method returns the test_result parameter
-        self.assertEqual(handled_result, test_result, "Should return third parameter unchanged")
-
-    def test_add_parameters(self):
-        """Testing add_parameters function
-        """
-
-        #Create a test argparse instance
-        parse = argparse.ArgumentParser()
-
-        #Save function to a variable
-        added_params = add_parameters(parse, self.transformer)
-
-        #Checking it returns None
-        self.assertIsNone(added_params, "Function should return None")
-
-    def test_do_work(self):
-        """Test for do_work function
-        """
-
-        #Create argparse instance
-        parse = argparse.ArgumentParser()
-
-        #Store function call to a variable
-        done_work = do_work(parse)
-        
-        #Check that the function returns None
-        self.assertIsNone(done_work, "Function should return None")
+    #Should return None
+    assert test_work == None
