@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# test_entrypoint.py
+base-image/test_files/test_entrypoint.py
