@@ -85,11 +85,23 @@ def test_perform_processing():
     #Should return dict
     assert isinstance(test_process, dict)
 
-'''
+
 def test_handle_result():
+    """Test for handle_result method
     """
-    """
-'''
+
+    #Set up testing variables
+    test_result_str = "all,file,print"
+    test_path = "~/Documents"
+    test_dict = {}
+
+    #Store function call to variable
+    test_handl_res = test_internal.handle_result(test_result_str,test_path,test_dict)
+
+    #Should return the test_dict
+    assert test_handl_res == test_dict
+
+
 
 def test_add_parameters():
     """Test add_parameters function
