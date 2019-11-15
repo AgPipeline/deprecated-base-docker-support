@@ -24,4 +24,4 @@ Providing a quick start guide with links to more detailed information a good app
 The goal is to provide documentation for users of these base images that makes it easy for them to be used.
 
 ## Testing
-The testing modules and readme may be found [here] (https://github.com/AgPipeline/base-docker-support/tree/test-development/base-image/test-files).
+The testing modules and readme may be found [here](https://github.com/AgPipeline/base-docker-support/tree/test-development/base-image/test-files).
