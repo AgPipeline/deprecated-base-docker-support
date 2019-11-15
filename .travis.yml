@@ -5,7 +5,9 @@ python:
 
 cache: pip
 
-install: "pip install pytest"
+install: 
+ - "pip install pytest"
+ - "pip install pylint"
 
 script:
  - "cd base-image"
