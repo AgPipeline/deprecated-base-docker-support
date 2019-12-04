@@ -32,7 +32,7 @@ def test_handle_error():
     test_code = None
     test_message = False
 
-    secondary_example = test_internal.handle_error(test_code,test_message)
+    secondary_example = test_internal.handle_error(test_code, test_message)
     assert isinstance(secondary_example, dict)
 
 def test_load_metadata():
@@ -80,7 +80,7 @@ def test_perform_processing():
     test_metadata = test_internal.load_metadata(test_path)
 
     #Save method call to variable
-    test_process = test_internal.perform_processing(test_transformer,parse, test_metadata)
+    test_process = test_internal.perform_processing(test_transformer, parse, test_metadata)
 
     #Should return dict
     assert isinstance(test_process, dict)
