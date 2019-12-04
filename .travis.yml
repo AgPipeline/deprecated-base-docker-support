@@ -11,6 +11,6 @@ install:
 
 script:
  - "pylint --rcfile=.pylintrc base-image/*.py"
- - "pylint --rcfile=.pylintrc base-image/testing-files/*.py"
+ - "pylint --rcfile=.pylintrc base-image/test-files/*.py"
  - "cd base-image"
  - "python -m pytest -v"
