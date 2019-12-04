@@ -96,7 +96,7 @@ def test_handle_result():
     test_dict = {}
 
     #Store function call to variable
-    test_handl_res = test_internal.handle_result(test_result_str,test_path,test_dict)
+    test_handl_res = test_internal.handle_result(test_result_str, test_path, test_dict)
 
     #Should return the test_dict
     assert test_handl_res == test_dict
@@ -108,7 +108,7 @@ def test_add_parameters():
     """
 
     #Save function call to variable
-    test_params = entrypoint.add_parameters(parse,test_transformer)
+    test_params = entrypoint.add_parameters(parse, test_transformer)
 
     #Should return None
     assert test_params == None

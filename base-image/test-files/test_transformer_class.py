@@ -7,7 +7,7 @@ import argparse
 
 #Initial testing values
 test_transformer = Transformer()
-parse = argparse.ArgumentParser(description = 'Test')
+parse = argparse.ArgumentParser(description='Test')
 test_metadata = {}
 
 def test_add_parameters():
@@ -22,6 +22,6 @@ def test_transformer_params():
     """Test for transformer params
     """
     #Saving method call to variable
-    testee = test_transformer.get_transformer_params(parse,test_metadata)
+    testee = test_transformer.get_transformer_params(parse, test_metadata)
     #Should return dict type
     assert isinstance(testee, dict)
