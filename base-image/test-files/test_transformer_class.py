@@ -2,19 +2,19 @@
 """
 
 #Import transformer_class.py module and inmedded modules
-from transformer_class import Transformer
 import argparse
+from transformer_class import Transformer
 
 #Initial testing values
-test_transformer = Transformer()
-parse = argparse.ArgumentParser(description='Test')
-test_metadata = {}
+TEST_TRANSFORMER = Transformer()
+PARSE = argparse.ArgumentParser(description='Test')
+TEST_METADATA = {}
 
 def test_add_parameters():
     """Test for add_parameters function
     """
     #Saving method call to variable
-    testee = test_transformer.add_parameters(parse)
+    testee =  TEST_TRANSFORMER.add_parameters(PARSE)
     #Should return None
     assert testee == None
     
@@ -22,6 +22,6 @@ def test_transformer_params():
     """Test for transformer params
     """
     #Saving method call to variable
-    testee = test_transformer.get_transformer_params(parse, test_metadata)
+    testee = TEST_TRANSFORMER.get_transformer_params(PARSE, TEST_METADATA)
     #Should return dict type
     assert isinstance(testee, dict)
