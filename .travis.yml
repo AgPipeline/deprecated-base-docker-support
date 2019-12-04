@@ -11,7 +11,7 @@ install:
 
 script:
  - "git clone https://github.com/AgPipeline/Organization-info.git"
- - "pylint --rcfile=pylint.rc base-image/*.py"
- - "pylint --rcfile=pylint.rc base-image/test-files/*.py"
+ - "pylint --rcfile=Organization-info/pylint.rc base-image/*.py"
+ - "pylint --rcfile=Organization-info/pylint.rc base-image/test-files/*.py"
  - "cd base-image"
  - "python -m pytest -v"
