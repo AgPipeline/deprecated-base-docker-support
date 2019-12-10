@@ -123,6 +123,14 @@ class __internal__():
         Return:
             A tuple containing the result code and result message. One or both of these
             values in the tuple may be None
+        Notes:
+            A string parameter will always return a result code of None and message of None indicating
+            the caller needs to decide what to do.
+            An integer parameter will cause the result message value of None, the caller needs to decide
+            what an appropriate message is.
+            A parameter that's iterable with a length > 0 will have the first value as the result code and the
+            second value as the result message. No checks are made for type conformity.
+            If the parameter is something other than the above, an exception will most likely be thrown.
         """
         result_code = None
         result_message = None
