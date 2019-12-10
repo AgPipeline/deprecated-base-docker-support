@@ -6,6 +6,7 @@ import argparse
 import os
 import json
 import logging
+from typing import Optional
 
 import transformer_class
 
@@ -22,7 +23,7 @@ class __internal__():
 
     @staticmethod
     def handle_error(code: int, message: str) -> dict:
-        """Handles logging and return values when an error ocurrs. Implies processing
+        """Handles logging and return values when an error occurs. Implies processing
            will stop.
         Arguments:
             code: return code related to the error
@@ -35,14 +36,12 @@ class __internal__():
             code = -1
         if not message:
             logging.warning("An error has occurred without a message, setting default message")
-            message = "An error has ocurred with error code (%s)" % str(code)
+            message = "An error has occurred with error code (%s)" % str(code)
 
         logging.error(message)
         logging.error("Stopping processing")
 
-        result = {}
-        result['error'] = message
-        result['code'] = code
+        result = {'error': message, 'code': code}
 
         return result
 
@@ -52,13 +51,13 @@ class __internal__():
         Arguments:
             metadata_path: path to the metadata file
         Return:
-            Returns a dict containing the loaded metadata. If an error ocurrs, the dict
+            Returns a dict containing the loaded metadata. If an error occurs, the dict
             won't contain metadata but will contain an error message under an 'error' key.
         """
         try:
             with open(metadata_path, 'r') as in_file:
                 md_load = json.load(in_file)
-                if not md_load is None:
+                if md_load is not None:
                     md_return = {'metadata': md_load}
                 else:
                     msg = 'Invalid JSON specified in metadata file "%s"' % metadata_path
@@ -73,14 +72,57 @@ class __internal__():
         return md_return
 
     @staticmethod
-    def parse_continue_result(result) -> list:
+    def check_params_result_error(transformer_params: dict) -> Optional[dict]:
+        """Checks the transformer parameter results for an error
+        Arguments:
+            transformer_params: the dictionary to check for errors
+        Return:
+            An error dict if errors were found and None if not
+        Notes:
+            See handle_error() function
+        """
+        if 'code' in transformer_params:
+            if 'error' in transformer_params:
+                error = transformer_params['error']
+            else:
+                error = "Error returned from get_transformer_params with code: %s" % transformer_params['code']
+            return __internal__.handle_error(-101, error)
+
+        return None
+
+    @staticmethod
+    def load_metadata_files(metadata_files: list) -> dict:
+        """Loads the specified metadata files
+        Arguments:
+            metadata_files: list of metadata files to load
+        Returns:
+            Returns a dict containing the loaded metadata as an array. If an error occurs, the dict
+            won't contain metadata but will contain an error message under an 'error' key.
+        """
+        metadata = []
+        result = {'metadata': metadata}
+        for metadata_file in metadata_files:
+            if not os.path.exists(metadata_file):
+                result = __internal__.handle_error(-2, "Unable to access metadata file '%s'" % metadata_file)
+                break
+            md_loaded = __internal__.load_metadata(metadata_file)
+            if 'metadata' in md_loaded:
+                metadata.append(md_loaded['metadata'])
+            else:
+                result = __internal__.handle_error(-3, md_loaded['error'])
+                break
+
+        return result
+
+    @staticmethod
+    def parse_continue_result(result) -> tuple:
         """Parses the result of calling transformer.check_continue and returns
            the code and/or message
         Arguments:
             result: the result from calling transformer.check_continue
         Return:
-            A list containing the result code and result message. One or both of these
-            values in the list may be None
+            A tuple containing the result code and result message. One or both of these
+            values in the tuple may be None
         """
         result_code = None
         result_message = None
@@ -121,7 +163,7 @@ class __internal__():
         return result
 
     @staticmethod
-    def perform_processing(transformer_instance, args: argparse.ArgumentParser, metadata: dict) -> dict:
+    def perform_processing(transformer_instance, args: argparse.Namespace, metadata: dict) -> dict:
         """Makes the calls to perform the processing
         Arguments:
             transformer_instance: instance of transformer class
@@ -136,16 +178,14 @@ class __internal__():
         if hasattr(transformer_instance, 'get_transformer_params'):
             transformer_params = transformer_instance.get_transformer_params(args, metadata)
             if not isinstance(transformer_params, dict):
-                return __internal__.handle_error(-101, \
-                    "Invalid return from getting transformer parameters from transformer class instance")
-            elif 'code' in transformer_params:
-                if 'error' in transformer_params:
-                    error = transformer_params['error']
-                else:
-                    error = "Error returned from get_transformer_params with code: %s" % transformer_params['code']
-                return __internal__.handle_error(-101, error)
+                return __internal__.handle_error(-101,
+                                                 "Invalid return from getting transformer parameters from transformer class instance")
+
+            params_result = __internal__.check_params_result_error(transformer_params)
+            if params_result:
+                return params_result
         else:
-            logging.debug("Transformer class instance does not have get_transformer_params method")
+            logging.info("Transformer class instance does not have get_transformer_params method")
             transformer_params = {}
 
         # First check if the transformer thinks everything is in place
@@ -154,10 +194,10 @@ class __internal__():
             if 'code' in result and result['code'] < 0 and 'error' not in result:
                 result['error'] = "Unknown error returned from check_continue call"
         else:
-            logging.debug("transformer module doesn't have a function named 'check_continue'")
+            logging.info("transformer module doesn't have a function named 'check_continue'")
 
         # Retrieve additional files if indicated by return code from the check
-        if not 'error' in result and 'code' in result and result['code'] == 0:
+        if 'error' not in result and 'code' in result and result['code'] == 0:
             # TODO: Fetch additional data for processing
             pass
 
@@ -173,12 +213,12 @@ class __internal__():
         return result
 
     @staticmethod
-    def handle_result(result_types: str, result_file_path: str, result: dict) -> None:
+    def handle_result(result: dict, result_types: str = None, result_file_path: str = None) -> dict:
         """Handles the results of processing as dictated by the arguments passed in.
         Arguments:
-            result_types: comma separated string containing one or more of: all, file, print
-            result_file_path: location to place result file
             result: the dictionary of result information
+            result_types: optional, comma separated string containing one or more of: all, file, print
+            result_file_path: optional, location to place result file
         Return:
             Returns the result parameter
         Notes:
@@ -216,7 +256,7 @@ def add_parameters(parser: argparse.ArgumentParser, transformer_instance) -> Non
     parser.add_argument('--result', nargs='?', default='all',
                         help='Direct the result of a run to one or more of (all is default): "all,file,print"')
 
-    parser.add_argument('--metadata', type=str, help='The path to the source metadata')
+    parser.add_argument('--metadata', type=str, action='append', help='The path to the source metadata')
 
     parser.add_argument('--working_space', type=str, help='the folder to use use as a workspace and ' +
                         'for storing results')
@@ -232,7 +272,7 @@ def add_parameters(parser: argparse.ArgumentParser, transformer_instance) -> Non
     # Assume the rest of the arguments are the files
     parser.add_argument('file_list', nargs=argparse.REMAINDER, help='additional files for transformer')
 
-def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
+def do_work(parser: argparse.ArgumentParser, **kwargs) -> dict:
     """Function to prepare and execute work unit
     Arguments:
         parser: an instance of argparse.ArgumentParser
@@ -244,7 +284,7 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
     transformer_instance = transformer_class.Transformer(**kwargs)
     if not transformer_instance:
         result = __internal__.handle_error(-100, "Unable to create transformer class instance for processing")
-        return __internal__.handle_result(None, None, result)
+        return __internal__.handle_result(result, None, None)
 
     add_parameters(parser, transformer_instance)
     args = parser.parse_args()
@@ -254,22 +294,20 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> None:
 
     # Check that we have mandatory metadata
     if not args.metadata:
-        result = __internal__.handle_error(-1, "No metadata path was specified.")
-    elif not os.path.exists(args.metadata):
-        result = __internal__.handle_error(-2, "Unable to access metadata file '%s'" % args.metadata)
+        result = __internal__.handle_error(-1, "No metadata paths were specified.")
     else:
-        md_result = __internal__.load_metadata(args.metadata)
-        if 'metadata' in md_result:
-            result = __internal__.perform_processing(transformer_instance, args, md_result['metadata'])
+        md_results = __internal__.load_metadata_files(args.metadata)
+        if 'metadata' in md_results:
+            result = __internal__.perform_processing(transformer_instance, args, md_results['metadata'])
         else:
-            result = __internal__.handle_error(-3, md_result['error'])
+            result = __internal__.handle_error(-3, md_results['error'])
 
     if args.working_space:
         result_path = os.path.join(args.working_space, 'result.json')
     else:
         result_path = None
 
-    __internal__.handle_result(args.result, result_path, result)
+    __internal__.handle_result(result, args.result, result_path)
     return result
 
 if __name__ == "__main__":
