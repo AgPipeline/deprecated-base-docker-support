@@ -7,7 +7,7 @@ Upon submitting a pull request Travis will build and run the testing modules aut
 ### Running the tests before submitting a pull request
 Should you wish to test your code before submitting a pull request follow the following steps
 1) Clone, pull, copy or otherwise aquire the pylintrc file located [here]()
-2) From the command line run the following commands
+2) From the command line run the following commands \
     \n ```pylint --rcfile=<path-to-pylint.rc> base-image/*py``` 
     \n ```pylint --rcfile=<path-to-pylint.rc> base-image/**/*py```
 3) Once the previous commands have executed there should be a list of changes that should be made to bring any code up to standard
