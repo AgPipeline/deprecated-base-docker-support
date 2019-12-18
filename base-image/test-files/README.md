@@ -17,7 +17,8 @@ Should you wish to test your code before submitting a pull request follow these 
     ```sh
     python -m pytest -v``` \
     or \
-    ```python3 -m pytest -v```
+    ```sh
+    python3 -m pytest -v```
 
 ### Requirements 
 There are no additional requirements or dependancies if not running these tests locally, if however these are to be run before deploying travis the following are required. 
