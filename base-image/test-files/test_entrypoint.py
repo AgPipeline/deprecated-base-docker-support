@@ -3,13 +3,9 @@
 
 #Import entrypoint.py and embedded modules
 import argparse
-#import os
-#import json
-#import logging
 import entrypoint
 import transformer
 from transformer_class import Transformer
-#import configuration
 
 #Set up initial testing values
 TEST_TRANSFORMER = Transformer()
