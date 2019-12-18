@@ -11,6 +11,7 @@ from transformer_class import Transformer
 TEST_TRANSFORMER = Transformer()
 PARSE = argparse.ArgumentParser()
 
+# pylint: disable=assignment-from-no-return
 def test_add_parameters():
     """Testing add_parameters function
     """

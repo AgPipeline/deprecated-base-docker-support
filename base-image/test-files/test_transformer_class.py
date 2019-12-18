@@ -10,6 +10,7 @@ TEST_TRANSFORMER = Transformer()
 PARSE = argparse.ArgumentParser(description='Test')
 TEST_METADATA = {}
 
+# pylint: disable=assignment-from-no-return
 def test_add_parameters():
     """Test for add_parameters function
     """

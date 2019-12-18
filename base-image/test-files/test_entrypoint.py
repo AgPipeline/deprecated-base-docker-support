@@ -12,6 +12,7 @@ TEST_TRANSFORMER = Transformer()
 PARSE = argparse.ArgumentParser(description="test")
 TEST_INTERNAL = entrypoint.__internal__()
 
+# pylint: disable=assignment-from-no-return
 def test_handle_error():
     """Test for handle error
     """
