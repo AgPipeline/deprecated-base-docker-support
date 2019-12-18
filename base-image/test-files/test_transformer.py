@@ -2,27 +2,28 @@
 """
 
 #Import transformer.py module and imbedded modules
+import argparse
 import transformer
 from transformer_class import Transformer
-import argparse
+
 
 #Initial testing values
-test_transformer = Transformer()
-parse = argparse.ArgumentParser()
+TEST_TRANSFORMER = Transformer()
+PARSE = argparse.ArgumentParser()
 
 def test_add_parameters():
     """Testing add_parameters function
     """
     #Saving function call to variable
-    testee = transformer.add_parameters(test_transformer)
+    testee = transformer.add_parameters(TEST_TRANSFORMER)
     #Should return None
-    assert testee == None
+    assert testee is None
 
 def test_check_continue():
     """Testing check_continue function
     """
     #Saving function call to variable
-    testee = transformer.check_continue(test_transformer)
+    testee = transformer.check_continue(TEST_TRANSFORMER)
     #Should return dict type
     assert isinstance(testee, dict)
 
@@ -30,6 +31,6 @@ def test_perform_process():
     """Test of the perform_process function
     """
     #Storing function call to a variable
-    testee = transformer.perform_process(test_transformer)
+    testee = transformer.perform_process(TEST_TRANSFORMER)
     #Should return dict type
     assert isinstance(testee, dict)

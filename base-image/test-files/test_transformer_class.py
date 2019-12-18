@@ -14,9 +14,9 @@ def test_add_parameters():
     """Test for add_parameters function
     """
     #Saving method call to variable
-    testee =  TEST_TRANSFORMER.add_parameters(PARSE)
+    testee = TEST_TRANSFORMER.add_parameters(PARSE)
     #Should return None
-    assert testee == None
+    assert testee is None
     
 def test_transformer_params():
     """Test for transformer params

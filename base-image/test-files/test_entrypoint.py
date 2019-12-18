@@ -2,19 +2,19 @@
 """
 
 #Import entrypoint.py and embedded modules
-import entrypoint
 import argparse
 import os
 import json
 import logging
+import entrypoint
 import transformer
 from transformer_class import Transformer
 import configuration
 
 #Set up initial testing values
-test_transformer = Transformer()
-parse = argparse.ArgumentParser(description="test")
-test_internal = entrypoint.__internal__()
+TEST_TRANSFORMER = Transformer()
+PARSE = argparse.ArgumentParser(description="test")
+TEST_INTERNAL = entrypoint.__internal__()
 
 def test_handle_error():
     """Test for handle error
@@ -24,7 +24,7 @@ def test_handle_error():
     test_message = "Test message"
 
     #Initial test using "ideal" args
-    ideal_example = test_internal.handle_error(test_code, test_message)
+    ideal_example = TEST_INTERNAL.handle_error(test_code, test_message)
     #Should return dict type
     assert isinstance(ideal_example, dict)
 
@@ -32,7 +32,7 @@ def test_handle_error():
     test_code = None
     test_message = False
 
-    secondary_example = test_internal.handle_error(test_code, test_message)
+    secondary_example = TEST_INTERNAL.handle_error(test_code, test_message)
     assert isinstance(secondary_example, dict)
 
 def test_load_metadata():
@@ -43,7 +43,7 @@ def test_load_metadata():
     test_path = "https://example-metadata-path.com"
 
     #Save method call to variable
-    testee = test_internal.load_metadata(test_path)
+    testee = TEST_INTERNAL.load_metadata(test_path)
     #Should return dict type
     assert isinstance(testee, dict)
 
@@ -52,9 +52,9 @@ def test_parse_continue_result():
     """
 
     #Saving check_continue result to a variable
-    check_result = transformer.check_continue(test_transformer)
+    check_result = transformer.check_continue(TEST_TRANSFORMER)
     #Assigning method call to variable
-    continue_result = test_internal.parse_continue_result(check_result)
+    continue_result = TEST_INTERNAL.parse_continue_result(check_result)
     #Should return list type
     assert isinstance(continue_result, tuple)
 
@@ -66,7 +66,7 @@ def test_handle_check_continue():
     test_dict = {}
     
     #Saving method call to variable
-    testee = test_internal.handle_check_continue(test_transformer, test_dict)
+    testee = TEST_INTERNAL.handle_check_continue(TEST_TRANSFORMER, test_dict)
 
     #Should return dict type
     assert isinstance(testee, dict)
@@ -77,10 +77,10 @@ def test_perform_processing():
 
     #Call the load_metadata method and store result to a variable 
     test_path = "https://example-metadata-path.com"
-    test_metadata = test_internal.load_metadata(test_path)
+    test_metadata = TEST_INTERNAL.load_metadata(test_path)
 
     #Save method call to variable
-    test_process = test_internal.perform_processing(test_transformer, parse, test_metadata)
+    test_process = TEST_INTERNAL.perform_processing(TEST_TRANSFORMER, PARSE, test_metadata)
 
     #Should return dict
     assert isinstance(test_process, dict)
@@ -96,7 +96,7 @@ def test_handle_result():
     test_dict = {}
 
     #Store function call to variable
-    test_handl_res = test_internal.handle_result(test_result_str, test_path, test_dict)
+    test_handl_res = TEST_INTERNAL.handle_result(test_result_str, test_path, test_dict)
 
     #Should return the test_dict
     assert test_handl_res == test_dict
@@ -108,17 +108,17 @@ def test_add_parameters():
     """
 
     #Save function call to variable
-    test_params = entrypoint.add_parameters(parse, test_transformer)
+    test_params = entrypoint.add_parameters(PARSE, TEST_TRANSFORMER)
 
     #Should return None
-    assert test_params == None
+    assert test_params is None
 
 def test_do_work():
     """Test for do_work function
     """
     
     #Save function call to variable
-    test_work = entrypoint.do_work(parse)
+    test_work = entrypoint.do_work(PARSE)
 
     #Should return None
-    assert test_work == None
+    assert test_work is None
