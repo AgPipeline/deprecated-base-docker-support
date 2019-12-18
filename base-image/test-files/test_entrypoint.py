@@ -3,9 +3,9 @@
 
 #Import entrypoint.py and embedded modules
 import argparse
-import entrypoint                         # @UnusedImport
-import transformer                        # @UnusedImport
-from transformer_class import Transformer  # @UnusedImport
+import entrypoint
+import transformer
+from transformer_class import Transformer
 
 #Set up initial testing values
 TEST_TRANSFORMER = Transformer()

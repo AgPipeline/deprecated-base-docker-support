@@ -3,8 +3,8 @@
 
 #Import transformer.py module and imbedded modules
 import argparse
-import transformer  # @UnusedImport
-from transformer_class import Transformer  # @UnusedImport
+import transformer
+from transformer_class import Transformer
 
 
 #Initial testing values
