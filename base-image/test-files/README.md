@@ -10,7 +10,8 @@ Should you wish to test your code before submitting a pull request follow these 
 2) From the command line run the following commands (from base-docker-support as current directory) \
     ```sh
     pylint --rcfile=<path-to-pylint.rc> base-image/*py```
-    ```pylint --rcfile=<path-to-pylint.rc> base-image/**/*py```
+    ```sh
+    pylint --rcfile=<path-to-pylint.rc> base-image/**/*py```
 3) Once the previous commands have executed there should be a list of changes that should be made to bring any code up to standard
 4) From the command line run the following command while the current working directory is base-image \
     ```python -m pytest -v``` \
