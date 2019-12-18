@@ -11,7 +11,8 @@ install:
 
 script:
  - "git clone https://github.com/AgPipeline/Organization-info.git"
- - "pylint --rcfile=Organization-info/pylint.rc base-image/*.py"
+ - "PYTHONPATH=${PYTHONPATH}:`pwd`/base-image/test-files/ \
+    && pylint --rcfile=Organization-info/pylint.rc base-image/*.py"
  - "PYTHONPATH=${PYTHONPATH}:`pwd`/base-image/test-files/ \
     && pylint --rcfile=Organization-info/pylint.rc base-image/test-files/*.py"
  - "cd base-image"
