@@ -14,7 +14,8 @@ Should you wish to test your code before submitting a pull request follow these 
     pylint --rcfile=<path-to-pylint.rc> base-image/**/*py```
 3) Once the previous commands have executed there should be a list of changes that should be made to bring any code up to standard
 4) From the command line run the following command while the current working directory is base-image \
-    ```python -m pytest -v``` \
+    ```sh
+    python -m pytest -v``` \
     or \
     ```python3 -m pytest -v```
 
