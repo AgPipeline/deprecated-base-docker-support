@@ -3,9 +3,9 @@
 
 #Import entrypoint.py and embedded modules
 import argparse
-import entrypoint
-import transformer
-from transformer_class import Transformer
+import entrypoint                         # pylint: disable=unused-import
+import transformer                        # pylint: disable=unused-import
+from transformer_class import Transformer # pylint: disable=unused-import
 
 #Set up initial testing values
 TEST_TRANSFORMER = Transformer()

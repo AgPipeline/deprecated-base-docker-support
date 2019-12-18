@@ -3,8 +3,8 @@
 
 #Import transformer.py module and imbedded modules
 import argparse
-import transformer
-from transformer_class import Transformer
+import transformer                        # pylint: disable=unused-import
+from transformer_class import Transformer # pylint: disable=unused-import
 
 
 #Initial testing values
