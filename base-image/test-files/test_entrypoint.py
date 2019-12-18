@@ -3,13 +3,13 @@
 
 #Import entrypoint.py and embedded modules
 import argparse
-import os
-import json
-import logging
+#import os
+#import json
+#import logging
 import entrypoint
 import transformer
 from transformer_class import Transformer
-import configuration
+#import configuration
 
 #Set up initial testing values
 TEST_TRANSFORMER = Transformer()
@@ -28,7 +28,7 @@ def test_handle_error():
     #Should return dict type
     assert isinstance(ideal_example, dict)
 
-    #A secondary test 
+    #A secondary test
     test_code = None
     test_message = False
 
@@ -75,7 +75,7 @@ def test_perform_processing():
     """Test for perform_processing method
     """
 
-    #Call the load_metadata method and store result to a variable 
+    #Call the load_metadata method and store result to a variable
     test_path = "https://example-metadata-path.com"
     test_metadata = TEST_INTERNAL.load_metadata(test_path)
 
