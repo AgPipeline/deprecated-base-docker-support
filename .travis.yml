@@ -15,5 +15,7 @@ script:
  - cd base-image
  - rm -r test-files
  - cd ..
- - pylint --rcfile=Organization-info/pylint.rc base-image/*.py"
+ - ls
+ - ls Organization-info/
+ - pylint --rcfile Organization-info/pylint.rc base-image/*.py"
  - "python -m pytest -v"
