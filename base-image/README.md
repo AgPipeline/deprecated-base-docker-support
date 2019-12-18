@@ -87,10 +87,17 @@ If the transformer.py file has a function named `check_continue` it will be call
 The return from the check_continue() function is used to determine if processing should continue.
 If the function is not defined, processing will continue automatically.
 
-5. Processsing:
-The `perform_process` function in transformer.py is called getting passed the transformer_class.Transformer instance and any parameters previously defined.
+5. Retrieve Files:
+If the transformer_class.Transformer instance has a method named `retrieve_files` it will be called getting passed the dictionary returned by `transformer_class.Transformer.get_transformer_params()` (see step 3.) and the loaded metadata.
+This allows the downloading of data when the transformer has determined it can proceed (see step 4.).
+If this function is not defined, processing will continue automatically. 
 
-6. Result Handling:
+6. Processsing:
+The `perform_process` function in transformer.py is called getting passed the transformer_class.Transformer instance and any parameters previously defined (see step 3.).
+This performs the processing of the data.
+It's important to note that the dictionary returned in step 3 is used to populate the parameter list of the `perform_process` call.
+
+7. Result Handling:
 The result of the above steps may produce warnings, errors, or successful results.
 These results can be stored in a file, printed to standard output, and/or returned to the caller of `do_work`.
 In the default case that we're exploring here, the return value from do_work is ignored.
@@ -102,7 +109,7 @@ The following command line parameters are defined for all transformers.
 * -h: (optional parameter) display help message (automatically defined by argparse)
 * --info, -i: (optional parameter) enable info level logging messages
 * --result: (optional parameter) how to handle the result of processing; one or more comma-separated strings of: all, file, print
-* --metadata: mandatory path to file containing JSON metadata
+* --metadata: mandatory path to file containing JSON metadata; can be specified multiple times
 * --working_space: path to folder to use as a working space and file store
 * the "file_list" argument contains all additional parameters (which are assumed to be file names but may not be)
 
