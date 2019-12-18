@@ -13,9 +13,7 @@ script:
  - "git clone https://github.com/AgPipeline/Organization-info.git"
  - mv base-image/test-files/*.py base-image/
  - cd base-image
- - rm -r test-files
+ - rm -r test-file/
  - cd ..
- - ls
- - ls Organization-info/
- - pylint --rcfile Organization-info/pylint.rc base-image/*.py"
+ - pylint --rcfile Organization-info/pylint.rc base-image/*.py
  - "python -m pytest -v"
