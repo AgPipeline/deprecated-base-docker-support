@@ -17,3 +17,4 @@ script:
  - cd ..
  - pylint --rcfile=Organization-info/pylint.rc base-image/*.py
  - "python -m pytest -v"
+ 
