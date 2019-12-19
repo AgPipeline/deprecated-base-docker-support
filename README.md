@@ -22,3 +22,6 @@ Be sure to read the [organization documentation](https://github.com/AgPipeline/O
 Every folder in this repo must have a README.md clearly explaining the interface for derived images, how to create a derived image, and other information on how to use the images created.
 Providing a quick start guide with links to more detailed information a good approach for some situations.
 The goal is to provide documentation for users of these base images that makes it easy for them to be used.
+
+## Testing
+The testing modules and readme may be found in the [testing folder](https://github.com/AgPipeline/base-docker-support/tree/test-development/base-image/test-files).
