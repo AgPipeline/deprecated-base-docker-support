@@ -86,7 +86,40 @@ class __internal__():
                 error = transformer_params['error']
             else:
                 error = "Error returned from get_transformer_params with code: %s" % transformer_params['code']
-            return __internal__.handle_error(-101, error)
+            return __internal__.handle_error(-104, error)
+
+        return None
+
+    @staticmethod
+    def check_retrieve_results_error(transformer_retrieve: tuple) -> Optional[dict]:
+        """Checks the results of the transformer_class retrieving files
+        Arguments:
+            transformer_retrieve: the results of the retrieve
+        Return:
+            An error dict if errors were found and None if not
+        Notes:
+            See handle_error() function
+        """
+        if not transformer_retrieve:
+            return None
+
+        code = 0
+        message = None
+        retrieve_len = len(transformer_retrieve)
+        if retrieve_len > 0:
+            code = transformer_retrieve[0]
+        if retrieve_len > 1:
+            message = transformer_retrieve[1]
+        else:
+            message = "Retrieving files returned a code of %s" % str(code)
+
+        # Check for an error code
+        if code < 0:
+            return __internal__.handle_error(code, message)
+
+        # Log the message if we get one returned to us
+        if retrieve_len > 1:
+            logging.info(transformer_retrieve[1])
 
         return None
 
@@ -172,7 +205,31 @@ class __internal__():
         return result
 
     @staticmethod
-    def perform_processing(transformer_instance, args: argparse.Namespace, metadata: dict) -> dict:
+    def handle_retrieve_files(transformer_instance: transformer_class.Transformer, args: argparse.Namespace, metadata: dict) ->\
+            Optional[dict]:
+        """Handles calling the transformer class to retrieve files
+        Arguments:
+            transformer_instance: the current transformer environment
+            args: the command line arguments
+            metadata: the loaded metadata
+        Return:
+            A dict containing error information if a problem occurs and None if no problems are found.
+        Note:
+            A side effect of this function is a information message logged if the transformer class instance does not have
+            a 'retrieve_files' function declared.
+        """
+        if hasattr(transformer_instance, 'retrieve_files'):
+            transformer_retrieve = transformer_instance.retrieve_files(args, metadata)
+            retrieve_results = __internal__.check_retrieve_results_error(transformer_retrieve)
+            if retrieve_results:
+                return retrieve_results
+        else:
+            logging.info("Transformer class doesn't have function named 'retrieve_files'")
+
+        return None
+
+    @staticmethod
+    def perform_processing(transformer_instance: transformer_class.Transformer, args: argparse.Namespace, metadata: dict) -> dict:
         """Makes the calls to perform the processing
         Arguments:
             transformer_instance: instance of transformer class
@@ -203,19 +260,18 @@ class __internal__():
             if 'code' in result and result['code'] < 0 and 'error' not in result:
                 result['error'] = "Unknown error returned from check_continue call"
         else:
-            logging.info("transformer module doesn't have a function named 'check_continue'")
+            logging.info("Transformer module doesn't have a function named 'check_continue'")
 
         # Retrieve additional files if indicated by return code from the check
         if 'error' not in result and 'code' in result and result['code'] == 0:
-            # TODO: Fetch additional data for processing
-            pass
+            result = __internal__.handle_retrieve_files(transformer_instance, args, metadata)
 
         # Next make the call to perform the processing
-        if not 'error' in result:
+        if 'error' not in result:
             if hasattr(transformer, 'perform_process'):
                 result = transformer.perform_process(transformer_instance, **transformer_params)
             else:
-                logging.debug("transformer module is missing function named 'perform_process'")
+                logging.debug("Transformer module is missing function named 'perform_process'")
                 return __internal__.handle_error(-102, "Transformer perform_process interface is not available " +
                                                  "for processing data")
 
