@@ -11,8 +11,10 @@ RUN chown -R extractor /home/extractor \
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-        python3 \
+        python3.7 \
         python3-pip && \
+    rm /usr/bin/python3 && ln -s /usr/bin/python3.7 /usr/bin/python3 && \
+    rm /usr/bin/python3m && ln -s /usr/bin/python3.7m /usr/bin/python3m && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
