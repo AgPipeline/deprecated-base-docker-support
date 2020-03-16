@@ -136,6 +136,9 @@ class __internal__():
         Return:
             Returns True if metadata is required (the default is that it's required), or False if not
         """
+        # Disable the following check since it's not a valid test here (METADATA_NEEDED is an optional variable)
+        # pylint: disable=no-member
+
         # If we have a variable defined, check the many ways of determining False
         if hasattr(configuration, "METADATA_NEEDED"):
             if not configuration.METADATA_NEEDED:
