@@ -7,6 +7,7 @@ import os
 import json
 import logging
 from typing import Optional
+import yaml
 
 import transformer_class
 
@@ -55,18 +56,24 @@ class __internal__():
             won't contain metadata but will contain an error message under an 'error' key.
         """
         try:
+            if os.path.splitext(metadata_path)[1] in ('.yml', '.yaml'):
+                load_func = yaml.safe_load
+            else:
+                load_func = json.load
             with open(metadata_path, 'r') as in_file:
-                md_load = json.load(in_file)
+                md_load = load_func(in_file)
                 if md_load is not None:
                     md_return = {'metadata': md_load}
                 else:
-                    msg = 'Invalid JSON specified in metadata file "%s"' % metadata_path
+                    msg = 'Invalid JSON/YAML specified in metadata file "%s"' % metadata_path
                     logging.error(msg)
                     md_return = {'error': msg}
         except Exception as ex:
-            msg = 'Unable to load metadata file "%s"' % metadata_path
+            msg = "Unable to load metadata file '%s'" % metadata_path
             logging.error(msg)
             logging.error('Exception caught: %s', str(ex))
+            if logging.getLogger().level == logging.DEBUG:
+                logging.exception(msg)
             md_return = {'error': msg}
 
         return md_return
@@ -122,6 +129,24 @@ class __internal__():
             logging.info(transformer_retrieve[1])
 
         return None
+
+    @staticmethod
+    def check_metadata_needed() -> bool:
+        """Checks if metadata is required
+        Return:
+            Returns True if metadata is required (the default is that it's required), or False if not
+        """
+        # Disable the following check since it's not a valid test here (METADATA_NEEDED is an optional variable)
+        # pylint: disable=no-member
+
+        # If we have a variable defined, check the many ways of determining False
+        if hasattr(configuration, "METADATA_NEEDED"):
+            if not configuration.METADATA_NEEDED:
+                return False
+            if isinstance(configuration.METADATA_NEEDED, str):
+                if configuration.METADATA_NEEDED.lower().strip() == 'false':
+                    return False
+        return True
 
     @staticmethod
     def load_metadata_files(metadata_files: list) -> dict:
@@ -358,7 +383,7 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> dict:
     logging.getLogger().setLevel(args.debug if args.debug == logging.DEBUG else args.info)
 
     # Check that we have mandatory metadata
-    if not args.metadata:
+    if not args.metadata and __internal__.check_metadata_needed():
         result = __internal__.handle_error(-1, "No metadata paths were specified.")
     else:
         md_results = __internal__.load_metadata_files(args.metadata)
