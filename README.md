@@ -25,3 +25,7 @@ The goal is to provide documentation for users of these base images that makes i
 
 ## Testing
 The testing modules and readme may be found in the [testing folder](https://github.com/AgPipeline/base-docker-support/tree/test-development/base-image/test-files).
+
+## Installing
+The __init__.py file contained within base-image and the setup.py file contained here in Base_Docker_Support allow for the base-image package to be installed as a 
+library. Rename the fields in setup.py to fit your desired fields.
