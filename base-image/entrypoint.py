@@ -15,9 +15,11 @@ import transformer_class
 import configuration
 import transformer
 
+
 class __internal__():
     """Class for functions intended for internal use only for this file
     """
+
     def __init__(self):
         """Performs initialization of class instance
         """
@@ -33,7 +35,8 @@ class __internal__():
             Returns a dict with the code and message
         """
         if code is None:
-            logging.warning("An error has occurred without a return code specified, setting default return code")
+            logging.warning("An error has occurred without a return code "
+                            "specified, setting default return code")
             code = -1
         if not message:
             logging.warning("An error has occurred without a message, setting default message")
@@ -92,7 +95,8 @@ class __internal__():
             if 'error' in transformer_params:
                 error = transformer_params['error']
             else:
-                error = "Error returned from get_transformer_params with code: %s" % transformer_params['code']
+                error = "Error returned from get_transformer_params with code:" \
+                        " %s" % transformer_params['code']
             return __internal__.handle_error(-104, error)
 
         return None
@@ -134,9 +138,11 @@ class __internal__():
     def check_metadata_needed() -> bool:
         """Checks if metadata is required
         Return:
-            Returns True if metadata is required (the default is that it's required), or False if not
+            Returns True if metadata is required (the default is that it's required),
+             or False if not
         """
-        # Disable the following check since it's not a valid test here (METADATA_NEEDED is an optional variable)
+        # Disable the following check since it's not a valid test here
+        # (METADATA_NEEDED is an optional variable)
         # pylint: disable=no-member
 
         # If we have a variable defined, check the many ways of determining False
@@ -161,7 +167,8 @@ class __internal__():
         result = {'metadata': metadata}
         for metadata_file in metadata_files:
             if not os.path.exists(metadata_file):
-                result = __internal__.handle_error(-2, "Unable to access metadata file '%s'" % metadata_file)
+                result = __internal__.handle_error(-2, "Unable to access metadata file '%s'"
+                                                   % metadata_file)
                 break
             logging.info("Loading metadata from file: '%s'", metadata_file)
             md_loaded = __internal__.load_metadata(metadata_file)
@@ -183,13 +190,15 @@ class __internal__():
             A tuple containing the result code and result message. One or both of these
             values in the tuple may be None
         Notes:
-            A string parameter will always return a result code of None and message of None indicating
-            the caller needs to decide what to do.
-            An integer parameter will cause the result message value of None, the caller needs to decide
-            what an appropriate message is.
-            A parameter that's iterable with a length > 0 will have the first value as the result code and the
-            second value as the result message. No checks are made for type conformity.
-            If the parameter is something other than the above, an exception will most likely be thrown.
+            A string parameter will always return a result code of None and message
+            of None indicating the caller needs to decide what to do.
+            An integer parameter will cause the result message value of None,
+            the caller needs to decide what an appropriate message is.
+            A parameter that's iterable with a length > 0 will have the first
+            value as the result code and the second value as the result message.
+            No checks are made for type conformity.
+            If the parameter is something other than the above,
+            an exception will most likely be thrown.
         """
         result_code = None
         result_message = None
@@ -206,7 +215,8 @@ class __internal__():
         return (result_code, result_message)
 
     @staticmethod
-    def handle_check_continue(transformer_instance: transformer_class.Transformer, transformer_params: dict) -> dict:
+    def handle_check_continue(transformer_instance: transformer_class.Transformer,
+                              transformer_params: dict) -> dict:
         """Handles calling the transformer.check_continue function
         Arguments:
             transformer_instance: instance of Transformer class
@@ -230,7 +240,8 @@ class __internal__():
         return result
 
     @staticmethod
-    def handle_retrieve_files(transformer_instance: transformer_class.Transformer, args: argparse.Namespace, metadata: dict) ->\
+    def handle_retrieve_files(transformer_instance: transformer_class.Transformer,
+                              args: argparse.Namespace, metadata: dict) -> \
             Optional[dict]:
         """Handles calling the transformer class to retrieve files
         Arguments:
@@ -238,9 +249,11 @@ class __internal__():
             args: the command line arguments
             metadata: the loaded metadata
         Return:
-            A dict containing error information if a problem occurs and None if no problems are found.
+            A dict containing error information if a problem occurs
+             and None if no problems are found.
         Note:
-            A side effect of this function is a information message logged if the transformer class instance does not have
+            A side effect of this function is a information message logged
+             if the transformer class instance does not have
             a 'retrieve_files' function declared.
         """
         if hasattr(transformer_instance, 'retrieve_files'):
@@ -254,7 +267,8 @@ class __internal__():
         return None
 
     @staticmethod
-    def perform_processing(transformer_instance: transformer_class.Transformer, args: argparse.Namespace, metadata: dict) -> dict:
+    def perform_processing(transformer_instance: transformer_class.Transformer,
+                           args: argparse.Namespace, metadata: dict) -> dict:
         """Makes the calls to perform the processing
         Arguments:
             transformer_instance: instance of transformer class
@@ -269,8 +283,9 @@ class __internal__():
         if hasattr(transformer_instance, 'get_transformer_params'):
             transformer_params = transformer_instance.get_transformer_params(args, metadata)
             if not isinstance(transformer_params, dict):
-                return __internal__.handle_error(-101,
-                                                 "Invalid return from getting transformer parameters from transformer class instance")
+                return __internal__.handle_error(-101, "Invalid return from getting transformer"
+                                                       " parameters from transformer class "
+                                                       "instance")
 
             params_result = __internal__.check_params_result_error(transformer_params)
             if params_result:
@@ -297,8 +312,8 @@ class __internal__():
                 result = transformer.perform_process(transformer_instance, **transformer_params)
             else:
                 logging.debug("Transformer module is missing function named 'perform_process'")
-                return __internal__.handle_error(-102, "Transformer perform_process interface is not available " +
-                                                 "for processing data")
+                return __internal__.handle_error(-102, "Transformer perform_process interface " +
+                                                 "is not available for processing data")
 
         return result
 
@@ -307,7 +322,8 @@ class __internal__():
         """Handles the results of processing as dictated by the arguments passed in.
         Arguments:
             result: the dictionary of result information
-            result_types: optional, comma separated string containing one or more of: all, file, print
+            result_types: optional, comma separated string containing one or more of: all,
+            file, print
             result_file_path: optional, location to place result file
         Return:
             Returns the result parameter
@@ -325,10 +341,12 @@ class __internal__():
                     with open(result_file_path, 'w') as out_file:
                         json.dump(result, out_file, indent=2)
                 else:
-                    logging.warning("Writing result to a file was requested but a file path wasn't provided.")
+                    logging.warning("Writing result to a file was requested but a file path"
+                                    " wasn't provided.")
                     logging.warning("    Skipping writing to a file.")
 
         return result
+
 
 def add_parameters(parser: argparse.ArgumentParser, transformer_instance) -> None:
     """Function to prepare and execute work unit
@@ -344,12 +362,14 @@ def add_parameters(parser: argparse.ArgumentParser, transformer_instance) -> Non
                         help='enable info logging (default=WARN)')
 
     parser.add_argument('--result', nargs='?', default='all',
-                        help='Direct the result of a run to one or more of (all is default): "all,file,print"')
+                        help='Direct the result of a run to one or more'
+                             ' of (all is default): "all,file,print"')
 
-    parser.add_argument('--metadata', type=str, action='append', help='The path to the source metadata')
+    parser.add_argument('--metadata', type=str, action='append',
+                        help='The path to the source metadata')
 
-    parser.add_argument('--working_space', type=str, help='the folder to use use as a workspace and ' +
-                        'for storing results')
+    parser.add_argument('--working_space', type=str,
+                        help='the folder to use use as a workspace and for storing results')
 
     # Let the transformer class add parameters
     if hasattr(transformer_instance, 'add_parameters'):
@@ -360,7 +380,9 @@ def add_parameters(parser: argparse.ArgumentParser, transformer_instance) -> Non
         transformer.add_parameters(parser)
 
     # Assume the rest of the arguments are the files
-    parser.add_argument('file_list', nargs=argparse.REMAINDER, help='additional files for transformer')
+    parser.add_argument('file_list', nargs=argparse.REMAINDER,
+                        help='additional files for transformer')
+
 
 def do_work(parser: argparse.ArgumentParser, **kwargs) -> dict:
     """Function to prepare and execute work unit
@@ -373,7 +395,8 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> dict:
     # Create an instance of the transformer
     transformer_instance = transformer_class.Transformer(**kwargs)
     if not transformer_instance:
-        result = __internal__.handle_error(-100, "Unable to create transformer class instance for processing")
+        result = __internal__.handle_error(-100, "Unable to create"
+                                                 " transformer class instance for processing")
         return __internal__.handle_result(result, None, None)
 
     add_parameters(parser, transformer_instance)
@@ -388,7 +411,8 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> dict:
     else:
         md_results = __internal__.load_metadata_files(args.metadata)
         if 'metadata' in md_results:
-            result = __internal__.perform_processing(transformer_instance, args, md_results['metadata'])
+            result = __internal__.perform_processing(transformer_instance,
+                                                     args, md_results['metadata'])
         else:
             result = __internal__.handle_error(-3, md_results['error'])
 
@@ -399,6 +423,7 @@ def do_work(parser: argparse.ArgumentParser, **kwargs) -> dict:
 
     __internal__.handle_result(result, args.result, result_path)
     return result
+
 
 if __name__ == "__main__":
     try:

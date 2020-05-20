@@ -1,3 +1,6 @@
+"""This script is used in order to make this package installable.
+A user can update the fields to match their project configuration"""
+
 import setuptools
 
 with open("README.md", "r") as fh:
