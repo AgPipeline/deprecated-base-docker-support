@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="example_pkg_username",
     version="0.0.1",
-    AUTHOR="Example Author",
+    author="Example Author",
     author_email="author@example.com",
     description="Base_Docker_Support package",
     long_description="longde_scription",
