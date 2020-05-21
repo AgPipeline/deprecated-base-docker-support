@@ -4,6 +4,7 @@
 import argparse
 import transformer_class
 
+
 # pylint: disable=unused-argument
 def add_parameters(parser: argparse.ArgumentParser) -> None:
     """Adds parameters

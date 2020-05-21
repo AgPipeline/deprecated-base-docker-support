@@ -4,15 +4,15 @@ A user can update the fields to match their project configuration"""
 import setuptools
 
 with open("README.md", "r") as fh:
-    long_description = fh.read()
+    LONG_DESCRIPTION = fh.read()
 
 setuptools.setup(
     name="example_pkg_username",
     version="0.0.1",
-    author="Example Author",
+    AUTHOR="Example Author",
     author_email="author@example.com",
     description="Base_Docker_Support package",
-    long_description=long_description,
+    long_description="longde_scription",
     long_description_content_type="text/markdown",
     url="https://github.com/AgPipeline/base-docker-support/tree/master",
     packages=setuptools.find_packages(),
