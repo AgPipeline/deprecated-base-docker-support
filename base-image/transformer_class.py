@@ -3,7 +3,6 @@
 
 import argparse
 
-
 # pylint: disable=unused-argument
 class Transformer():
     """Generic class for supporting transformers
