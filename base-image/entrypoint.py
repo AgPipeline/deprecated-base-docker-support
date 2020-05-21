@@ -7,7 +7,6 @@ import os
 import json
 import logging
 from typing import Optional
-import yaml
 
 import transformer_class
 
@@ -59,10 +58,7 @@ class __internal__():
             won't contain metadata but will contain an error message under an 'error' key.
         """
         try:
-            if os.path.splitext(metadata_path)[1] in ('.yml', '.yaml'):
-                load_func = yaml.safe_load
-            else:
-                load_func = json.load
+            load_func = json.load
             with open(metadata_path, 'r') as in_file:
                 md_load = load_func(in_file)
                 if md_load is not None:
