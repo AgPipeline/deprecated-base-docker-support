@@ -59,7 +59,7 @@ class __internal__():
         """
         try:
             if os.path.splitext(metadata_path)[1] in ('.yml', '.yaml'):
-                load_func = yaml.safe_load()
+                load_func = yaml.safe_load
             else:
                 load_func = json.load
             with open(metadata_path, 'r') as in_file:
